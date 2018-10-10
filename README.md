@@ -41,7 +41,7 @@ php bin/console tictactoe:play Charles Mary 'Mi Tic tac' -d 5
 
 ##### Start a new game between two users (Invalid Board dimension 2x2)
 ```
-php bin/console tictactoe:play Charles Mary 'Mi Tic tac' -d 
+php bin/console tictactoe:play Charles Mary 'Mi Tic tac' -d 2
 ```
 
 ##### A user doing a move in a game
@@ -49,7 +49,7 @@ php bin/console tictactoe:play Charles Mary 'Mi Tic tac' -d
 php bin/console tictactoe:movement Mary 'Mi Tic Tac Board' 1 2
 ```
 
-##### To know if a game has finished and if there is a winner (No winners, No finished)
+##### To know if a game has finished and if there is a winner (No winner, No finished)
 ```
 php bin/console tictactoe:check:finished:winner Charles Mary 'My Tic Tac' 
 ```
@@ -64,7 +64,7 @@ php bin/console tictactoe:check:finished:winner Charles Mary 'My Tic Tac' -w A
 php bin/console tictactoe:check:finished:winner Charles Mary 'My Tic Tac' -w B
 ```
 
-##### To know if a game has finished and if there is a winner (Finished nobody wins)
+##### To know if a game has finished and if there is a winner (Finished, nobody wins)
 ```
 php bin/console tictactoe:check:finished:winner Charles Mary 'My Tic Tac' -w 0
 ```
