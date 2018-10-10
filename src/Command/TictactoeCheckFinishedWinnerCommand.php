@@ -6,7 +6,6 @@ use App\Model\Game;
 use App\Services\GameManager;
 use App\Services\MovementsManager;
 use App\Services\UserManager;
-use App\Utils\BoardFactory;
 use App\Utils\GameBuilder;
 use App\Utils\GameNoWinnerBuilder;
 use App\Utils\GameUserAWinnerBuilder;
