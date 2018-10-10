@@ -1,4 +1,4 @@
-# tictactoe
+# tictactoe [![Build Status](https://travis-ci.org/jjmonagas/tictactoe.svg?branch=master)](https://travis-ci.org/jjmonagas/tictactoe)
 TIC TAC TOE as a service
 ## Requirements
 
