@@ -1,5 +1,9 @@
 # tictactoe [![Build Status](https://travis-ci.org/jjmonagas/tictactoe.svg?branch=master)](https://travis-ci.org/jjmonagas/tictactoe)
 TIC TAC TOE as a service
+
+* master brach --> Main branch
+* feature/ddd-version branch --> Domain Driven Design version
+
 ## Requirements
 
 * PHP 7.1.3 or higher;
