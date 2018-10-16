@@ -6,8 +6,10 @@
  * Time: 22:07
  */
 
-namespace App\Model;
+namespace App\Domain\Game\Entity;
 
+
+use App\Domain\User\Entity\User;
 
 class Movement
 {

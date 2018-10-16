@@ -6,12 +6,11 @@
  * Time: 1:36
  */
 
-namespace App\Services;
+namespace App\Domain\Game;
 
-
-use App\Model\Game;
-use App\Model\Movement;
-use App\Model\User;
+use App\Domain\Game\Entity\Game;
+use App\Domain\Game\Entity\Movement;
+use App\Domain\User\Entity\User;
 
 interface MovementInterface
 {

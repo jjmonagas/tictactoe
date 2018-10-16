@@ -5,7 +5,7 @@
  * Date: 9/10/18
  * Time: 21:06
  */
-namespace App\Model;
+namespace App\Domain\User\Entity;
 
 /**
  * Class User

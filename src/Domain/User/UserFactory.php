@@ -6,10 +6,11 @@
  * Time: 21:50
  */
 
-namespace App\Utils;
+namespace App\Domain\User;
 
 
-use App\Model\User;
+
+use App\Domain\User\Entity\User;
 
 class UserFactory
 {

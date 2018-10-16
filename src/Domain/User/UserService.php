@@ -5,12 +5,12 @@
  * Date: 9/10/18
  * Time: 22:01
  */
-namespace App\Services;
+namespace App\Domain\User;
 
-use App\Model\User;
-use App\Utils\UserFactory;
 
-class UserManager implements UserInterface
+use App\Domain\User\Entity\User;
+
+class UserService implements UserInterface
 {
 
     /**
@@ -29,6 +29,7 @@ class UserManager implements UserInterface
     public function deleteUser(string $username) :string {
         //Find user by username
         //remove user
+        //DISPATCH EVENT to remove GAMES
         //return message
         return 'User ' . $username . ' deleted';
     }

@@ -2,10 +2,10 @@
 
 namespace App\Command;
 
-use App\Model\Game;
-use App\Services\GameManager;
-use App\Services\MovementsManager;
-use App\Services\UserManager;
+use App\Domain\Game\Entity\Game;
+use App\Domain\Game\GameService;
+use App\Domain\Game\MovementService;
+use App\Domain\User\UserService;
 use App\Utils\GameBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,11 +24,11 @@ class TictactoeMovementCommand extends Command
 
     /**
      * TictactoeMovementCommand constructor.
-     * @param MovementsManager $movementManager
-     * @param UserManager $userManager
-     * @param GameManager $gameManager
+     * @param MovementService $movementManager
+     * @param UserService $userManager
+     * @param GameService $gameManager
      */
-    public function __construct(MovementsManager $movementManager, UserManager $userManager, GameManager $gameManager, GameBuilder $gameBuilder)
+    public function __construct(MovementService $movementManager, UserService $userManager, GameService $gameManager, GameBuilder $gameBuilder)
     {
         $this->movementManager = $movementManager;
         $this->userManager = $userManager;
@@ -59,7 +59,7 @@ class TictactoeMovementCommand extends Command
         $coordinateY = $input->getArgument('coordinate-y');
 
         $user = $this->userManager->getUser($username);
-        $newGame = $this->gameManager->createNewGame($username, 'machine', $gameName, Game::BOARD_DIMENSION_DEFAULT, $this->gameBuilder);
+        $newGame = $this->gameManager->startNewGame($username, 'machine', $gameName, Game::BOARD_DIMENSION_DEFAULT, $this->gameBuilder);
 
         $newMovement = $this->movementManager->makeMovement($user, $newGame, $coordinateX, $coordinateY);
 

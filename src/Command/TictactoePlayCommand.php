@@ -2,8 +2,9 @@
 
 namespace App\Command;
 
-use App\Model\Game;
-use App\Services\GameManager;
+use App\Domain\Game\Entity\Game;
+use App\Domain\Game\GameService;
+
 use App\Utils\GameBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,9 +22,10 @@ class TictactoePlayCommand extends Command
 
     /**
      * TictactoePlayCommand constructor.
-     * @param GameManager $gameManager
+     * @param GameService $gameManager
+     * @param GameBuilder $gameBuilder
      */
-    public function __construct(GameManager $gameManager, GameBuilder $gameBuilder)
+    public function __construct(GameService $gameManager, GameBuilder $gameBuilder)
     {
         $this->gameManager = $gameManager;
         $this->gameBuilder = $gameBuilder;
@@ -55,12 +57,12 @@ class TictactoePlayCommand extends Command
             $io->warning('Imposible to create a game with that dimension. Minimum board is with dimension 3');
         } else {
 
-            $newGame = $this->gameManager->createNewGame($usernameA, $usernameB, $gameName, $dimension, $this->gameBuilder);
+            $newGame = $this->gameManager->startNewGame($usernameA, $usernameB, $gameName, $dimension, $this->gameBuilder);
 
             $io->success('A new game ' . $newGame->getName() . ' created! Let\'s play!');
             $io->section('Some instructions');
-            $io->note('User token for ' . $newGame->getUserA()->getUsername() . ' is ' . Game::USER_A_TOKEN);
-            $io->note('User token for ' . $newGame->getUserB()->getUsername() . ' is ' . Game::USER_B_TOKEN);
+            $io->note('User token for ' . $newGame->getPlayerA()->getUsername() . ' is ' . Game::USER_A_TOKEN);
+            $io->note('User token for ' . $newGame->getPlayerB()->getUsername() . ' is ' . Game::USER_B_TOKEN);
         }
 
 

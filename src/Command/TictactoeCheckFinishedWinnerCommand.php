@@ -2,14 +2,14 @@
 
 namespace App\Command;
 
-use App\Model\Game;
-use App\Services\GameManager;
-use App\Services\MovementsManager;
-use App\Services\UserManager;
+use App\Domain\Game\Entity\Game;
+use App\Domain\Game\GameService;
+use App\Domain\Game\MovementService;
+use App\Domain\User\UserService;
 use App\Utils\GameBuilder;
 use App\Utils\GameNoWinnerBuilder;
-use App\Utils\GameUserAWinnerBuilder;
-use App\Utils\GameUserBWinnerBuilder;
+use App\Utils\GamePlayerAWinnerBuilder;
+use App\Utils\GamePlayerBWinnerBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,20 +31,20 @@ class TictactoeCheckFinishedWinnerCommand extends Command
 
     /**
      * TictactoeCheckFinishedWinnerCommand constructor.
-     * @param MovementsManager $movementManager
-     * @param UserManager $userManager
-     * @param GameManager $gameManager
+     * @param MovementService $movementManager
+     * @param UserService $userManager
+     * @param GameService $gameManager
      * @param GameBuilder $gameBuilder
-     * @param GameUserAWinnerBuilder $gameUserAWinnerBuilder
-     * @param GameUserBWinnerBuilder $gameUserBWinnerBuilder
+     * @param GamePlayerAWinnerBuilder $gameUserAWinnerBuilder
+     * @param GamePlayerBWinnerBuilder $gameUserBWinnerBuilder
      * @param GameNoWinnerBuilder $gameNoWinnerBuilder
      */
-    public function __construct(MovementsManager $movementManager,
-                                UserManager $userManager,
-                                GameManager $gameManager,
+    public function __construct(MovementService $movementManager,
+                                UserService $userManager,
+                                GameService $gameManager,
                                 GameBuilder $gameBuilder,
-                                GameUserAWinnerBuilder $gameUserAWinnerBuilder,
-                                GameUserBWinnerBuilder $gameUserBWinnerBuilder,
+                                GamePlayerAWinnerBuilder $gameUserAWinnerBuilder,
+                                GamePlayerBWinnerBuilder $gameUserBWinnerBuilder,
                                 GameNoWinnerBuilder $gameNoWinnerBuilder)
     {
         $this->movementManager = $movementManager;
@@ -89,7 +89,7 @@ class TictactoeCheckFinishedWinnerCommand extends Command
             $newGameBuilder = $newGameBuilder === null && $winner === '0' ? $this->gameNoWinnerBuilder : $newGameBuilder;
             $gameBuilder = $newGameBuilder ?? $gameBuilder;
         }
-        $newGame = $this->gameManager->createNewGame($usernameA, $usernameB, $gameName, Game::BOARD_DIMENSION_DEFAULT, $gameBuilder);
+        $newGame = $this->gameManager->startNewGame($usernameA, $usernameB, $gameName, Game::BOARD_DIMENSION_DEFAULT, $gameBuilder);
 
         $io->section('BOARD');
         var_dump($newGame->getBoard());

@@ -22,12 +22,12 @@ class TictactoeCheckFinishedWinnerCommandTest extends KernelTestCase
 
 
         $application->add(new TictactoeCheckFinishedWinnerCommand(
-            $container->get('App\Services\MovementsManager'),
-            $container->get('App\Services\UserManager'),
-            $container->get('App\Services\GameManager'),
+            $container->get('MovementService'),
+            $container->get('UserService'),
+            $container->get('GameService'),
             $container->get('App\Utils\GameBuilder'),
-            $container->get('App\Utils\GameUserAWinnerBuilder'),
-            $container->get('App\Utils\GameUserBWinnerBuilder'),
+            $container->get('GamePlayerAWinnerBuilder'),
+            $container->get('GamePlayerBWinnerBuilder'),
             $container->get('App\Utils\GameNoWinnerBuilder')
             ));
         $command = $application->find('tictactoe:check:finished:winner');

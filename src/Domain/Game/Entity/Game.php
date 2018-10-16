@@ -6,7 +6,9 @@
  * Time: 21:08
  */
 
-namespace App\Model;
+namespace App\Domain\Game\Entity;
+
+use App\Domain\User\Entity\User;
 
 /**
  * Class Game
@@ -24,12 +26,12 @@ class Game
     /**
      * @var User
      */
-    protected $userA;
+    protected $playerA;
 
     /**
      * @var User
      */
-    protected $userB;
+    protected $playerB;
 
     /**
      * @var array
@@ -47,6 +49,13 @@ class Game
     protected $name;
 
     /**
+     * @var boolean
+     */
+    public $hasEmptySlots;
+
+
+
+    /**
      * Game constructor.
      */
     public function __construct()
@@ -58,36 +67,36 @@ class Game
     /**
      * @return User
      */
-    public function getUserA(): User
+    public function getPlayerA(): User
     {
-        return $this->userA;
+        return $this->playerA;
     }
 
     /**
-     * @param User $userA
+     * @param User $playerA
      * @return Game
      */
-    public function setUserA(User $userA): Game
+    public function setPlayerA(User $playerA): Game
     {
-        $this->userA = $userA;
+        $this->playerA = $playerA;
         return $this;
     }
 
     /**
      * @return User
      */
-    public function getUserB(): User
+    public function getPlayerB(): User
     {
-        return $this->userB;
+        return $this->playerB;
     }
 
     /**
-     * @param User $userB
+     * @param User $playerB
      * @return Game
      */
-    public function setUserB(User $userB): Game
+    public function setPlayerB(User $playerB): Game
     {
-        $this->userB = $userB;
+        $this->playerB = $playerB;
         return $this;
     }
 
@@ -144,4 +153,15 @@ class Game
         $this->name = $name;
         return $this;
     }
+
+
+    public function start() {
+        $this->hasEmptySlots = 0;
+    }
+
+    public function finish() {
+
+    }
+
+
 }

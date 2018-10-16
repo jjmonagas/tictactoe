@@ -8,8 +8,7 @@
 
 namespace App\Utils;
 
-
-use App\Model\Movement;
+use App\Domain\Game\Entity\Movement;
 
 class BoardFactory
 {

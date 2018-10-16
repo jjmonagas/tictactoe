@@ -6,15 +6,16 @@
  * Time: 1:34
  */
 
-namespace App\Services;
+namespace App\Domain\Game;
 
 
-use App\Model\Game;
+
+use App\Domain\Game\Entity\Game;
 use App\Utils\GameBuilderInterface;
 
 interface GameInterface
 {
-    public function createNewGame(string $usernameA, string $usernameB, string $gameName, int $boardDimension, GameBuilderInterface $gameBuilder) :Game;
+    public function startNewGame(string $usernameA, string $usernameB, string $gameName, int $boardDimension, GameBuilderInterface $gameBuilder) :Game;
     public function findUserTokenByUsername(Game $game, string $username) :string;
     public function getGame(string $gameName) :Game;
 }

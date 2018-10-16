@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Tests\Utils;
+namespace App\Tests\Domain\User;
 
-use App\Utils\UserFactory;
+
+use App\Domain\User\UserFactory;
 use PHPUnit\Framework\TestCase;
 
 class UserFactoryTest extends TestCase

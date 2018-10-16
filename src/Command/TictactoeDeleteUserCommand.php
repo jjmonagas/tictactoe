@@ -2,7 +2,8 @@
 
 namespace App\Command;
 
-use App\Services\UserManager;
+
+use App\Domain\User\UserService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,9 +18,9 @@ class TictactoeDeleteUserCommand extends Command
 
     /**
      * TictactoeCreateUserCommand constructor.
-     * @param UserManager $userManager
+     * @param UserService $userManager
      */
-    public function __construct(UserManager $userManager)
+    public function __construct(UserService $userManager)
     {
         $this->userManager = $userManager;
 

@@ -9,13 +9,14 @@
 namespace App\Utils;
 
 
+
 interface GameBuilderInterface
 {
-    public function addUserA(string $username);
+    public function addPlayerA(string $username);
 
-    public function addUserB(string $username);
+    public function addPlayerB(string $username);
 
-    public function createBoard(int $dimension);
+    public function drawBoard(int $dimension);
 
     public function setName(string $name);
 }

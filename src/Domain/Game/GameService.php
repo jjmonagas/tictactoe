@@ -6,13 +6,14 @@
  * Time: 22:56
  */
 
-namespace App\Services;
+namespace App\Domain\Game;
 
 
-use App\Model\Game;
+
+use App\Domain\Game\Entity\Game;
 use App\Utils\GameBuilderInterface;
 
-class GameManager implements GameInterface
+class GameService implements GameInterface
 {
     /**
      * @param string $usernameA
@@ -22,13 +23,14 @@ class GameManager implements GameInterface
      * @param GameBuilderInterface $gameBuilder
      * @return mixed
      */
-    public function createNewGame(string $usernameA, string $usernameB, string $gameName, int $boardDimension, GameBuilderInterface $gameBuilder) : Game
+    public function startNewGame(string $usernameA, string $usernameB, string $gameName, int $boardDimension, GameBuilderInterface $gameBuilder) : Game
     {
-        return $gameBuilder->addUserA($usernameA)
-            ->addUserB($usernameB)
-            ->createBoard($boardDimension)
-            ->setName($gameName)
-            ->getGame();
+        $gameBuilder->addPlayerA($usernameA);
+        $gameBuilder->addPlayerB($usernameB);
+        $gameBuilder->drawBoard($boardDimension);
+        $gameBuilder->setName($gameName)
+        ;
+        return $gameBuilder->getGame();
     }
 
     /**
@@ -37,7 +39,7 @@ class GameManager implements GameInterface
      * @return string
      */
     public function findUserTokenByUsername(Game $game, string $username) :string {
-        return $game->getUserA()->getUsername() === $username ? Game::USER_A_TOKEN : Game::USER_B_TOKEN;
+        return $game->getPlayerA()->getUsername() === $username ? Game::USER_A_TOKEN : Game::USER_B_TOKEN;
     }
 
     /**

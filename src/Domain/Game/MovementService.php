@@ -5,13 +5,14 @@
  * Date: 9/10/18
  * Time: 22:11
  */
-namespace App\Services;
+namespace App\Domain\Game;
 
-use App\Model\Game;
-use App\Model\Movement;
-use App\Model\User;
 
-class MovementsManager implements MovementInterface
+use App\Domain\Game\Entity\Game;
+use App\Domain\Game\Entity\Movement;
+use App\Domain\User\Entity\User;
+
+class MovementService implements MovementInterface
 {
 
     protected $gameManager;
@@ -20,7 +21,7 @@ class MovementsManager implements MovementInterface
      * MovementsManager constructor.
      * @param $gameManager
      */
-    public function __construct(GameManager $gameManager)
+    public function __construct(GameService $gameManager)
     {
         $this->gameManager = $gameManager;
     }

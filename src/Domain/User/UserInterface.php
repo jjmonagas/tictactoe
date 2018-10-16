@@ -6,10 +6,11 @@
  * Time: 1:37
  */
 
-namespace App\Services;
+namespace App\Domain\User;
 
 
-use App\Model\User;
+
+use App\Domain\User\Entity\User;
 
 interface UserInterface
 {
