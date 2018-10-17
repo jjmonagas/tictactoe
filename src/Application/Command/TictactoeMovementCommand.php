@@ -2,7 +2,7 @@
 
 namespace App\Application\Command;
 
-use App\Domain\Game\Entity\Game;
+use App\Domain\Game\Entity\BoardGame;
 use App\Domain\Game\GameBuilder;
 use App\Domain\Game\GameService;
 use App\Domain\Game\MovementService;
@@ -60,12 +60,12 @@ class TictactoeMovementCommand extends Command
         $coordinateY = $input->getArgument('coordinate-y');
 
         $user = $this->userManager->getUser($username);
-        $newGame = $this->gameManager->startNewGame($username, 'machine', $gameName, Game::BOARD_DIMENSION_DEFAULT, $this->gameBuilder);
+        $newGame = $this->gameManager->startNewGame($username, 'machine', $gameName, BoardGame::BOARD_DIMENSION_DEFAULT, $this->gameBuilder);
 
         $newMovement = $this->movementManager->makeMovement($user, $newGame, $coordinateX, $coordinateY);
 
         $io->section('Board');
-        var_dump($newMovement->getGame()->getBoard());
+        var_dump($newMovement->getGame()->getBoardGame()->board);
 
         $io->success('User ' . $newMovement->getPlayer()->getUsername() . ' has marked board[' . $newMovement->getCoordinateX() . '][' . $newMovement->getCoordinateY() . ']');
     }

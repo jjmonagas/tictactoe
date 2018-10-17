@@ -5,7 +5,7 @@ namespace App\Application\Command;
 use App\Application\Command\Utils\GameNoWinnerBuilder;
 use App\Application\Command\Utils\GamePlayerAWinnerBuilder;
 use App\Application\Command\Utils\GamePlayerBWinnerBuilder;
-use App\Domain\Game\Entity\Game;
+use App\Domain\Game\Entity\BoardGame;
 use App\Domain\Game\GameBuilder;
 use App\Domain\Game\GameService;
 use App\Domain\Game\MovementService;
@@ -89,10 +89,10 @@ class TictactoeCheckFinishedWinnerCommand extends Command
             $newGameBuilder = $newGameBuilder === null && $winner === '0' ? $this->gameNoWinnerBuilder : $newGameBuilder;
             $gameBuilder = $newGameBuilder ?? $gameBuilder;
         }
-        $newGame = $this->gameManager->startNewGame($usernameA, $usernameB, $gameName, Game::BOARD_DIMENSION_DEFAULT, $gameBuilder);
+        $newGame = $this->gameManager->startNewGame($usernameA, $usernameB, $gameName, BoardGame::BOARD_DIMENSION_DEFAULT, $gameBuilder);
 
         $io->section('BOARD');
-        var_dump($newGame->getBoard());
+        var_dump($newGame->getBoardGame()->board);
 
         if ($this->movementManager->isPlayerWinner($newGame, $playerA)) {
             $io->success('Congratulations ' . $playerA->getUsername() . '! You are the winner!!');

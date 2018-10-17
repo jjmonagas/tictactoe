@@ -17,5 +17,5 @@ interface GameInterface
 {
     public function startNewGame(string $usernameA, string $usernameB, string $gameName, int $boardDimension, GameBuilderInterface $gameBuilder) :Game;
     public function findPlayerTokenByUsername(Game $game, string $username) :string;
-    public function getGame(string $gameName) :Game;
+    public function findGameByName(string $gameName) :Game;
 }

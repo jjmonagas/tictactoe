@@ -37,12 +37,12 @@ class MovementService implements MovementInterface
      */
     public function makeMovement(Player $player, Game $game, int $coordinateX, int $coordinateY) :Movement {
         $movement = null;
-        $board = $game->getBoard();
+        $board = $game->getBoardGame()->board;
         if ($board[$coordinateX][$coordinateY] === Movement::EMPTY_MOVEMENT) {
-            $userToken = $this->gameManager->findPlayerTokenByUsername($game, $player->getUsername());
-            $board[$coordinateX][$coordinateY] = $userToken;
+            $playerToken = $this->gameManager->findPlayerTokenByUsername($game, $player->getUsername());
+            $board[$coordinateX][$coordinateY] = $playerToken;
             //TODO save Game
-            $game->setBoard($board);
+            $game->updateGameStatus($board);
 
             //TODO Save movement as LOGS
             $movement = new Movement();
@@ -70,8 +70,8 @@ class MovementService implements MovementInterface
      * @return bool|int
      */
     public function hasFreeMovements(Game $game) :bool {
-        $boardDimension = $game->getBoardDimension();
-        $board = $game->getBoard();
+        $boardDimension = $game->getBoardGame()->boardDimension;
+        $board = $game->getBoardGame()->board;
         $freeMovements = 0;
         for ($n=0; $n < $boardDimension;$n++) {
             for($m=0; $m < $boardDimension; $m++) {
@@ -93,8 +93,8 @@ class MovementService implements MovementInterface
     private function winnerHorizontalMovements(Game $game, Player $player) :bool {
         $playerHits = 0;
         $playerToken = $this->gameManager->findPlayerTokenByUsername($game, $player->getUsername());
-        $boardDimension = $game->getBoardDimension();
-        $board = $game->getBoard();
+        $boardDimension = $game->getBoardGame()->boardDimension;
+        $board = $game->getBoardGame()->board;
         for ($n = 0; $n < $boardDimension; $n++) {
             for($m = 0; $m < $boardDimension; $m++) {
                 if ($board[$n][$m] === $playerToken) {
@@ -113,8 +113,8 @@ class MovementService implements MovementInterface
     private function winnerVerticalMovements(Game $game, Player $player) :bool {
         $playerHits = 0;
         $playerToken = $this->gameManager->findPlayerTokenByUsername($game, $player->getUsername());
-        $boardDimension = $game->getBoardDimension();
-        $board = $game->getBoard();
+        $boardDimension = $game->getBoardGame()->boardDimension;
+        $board = $game->getBoardGame()->board;
         for ($n = 0; $n < $boardDimension; $n++) {
             for($m = 0; $m < $boardDimension; $m++) {
                 if ($board[$m][$n] === $playerToken) {
@@ -134,8 +134,8 @@ class MovementService implements MovementInterface
         $playerHitsFirstDiagonal = 0;
         $playerHitsSecondDiagonal = 0;
         $playerToken = $this->gameManager->findPlayerTokenByUsername($game, $player->getUsername());
-        $boardDimension = $game->getBoardDimension();
-        $board = $game->getBoard();
+        $boardDimension = $game->getBoardGame()->boardDimension;
+        $board = $game->getBoardGame()->board;
         for ($n = 0; $n < $boardDimension; $n++) {
             if ($board[$n][$n] === $playerToken) {
                 $playerHitsFirstDiagonal++;
@@ -156,7 +156,7 @@ class MovementService implements MovementInterface
      * @return bool
      */
     private function checkWinnerRow(int $playerHits, Game $game) :bool {
-        return $playerHits === $game->getBoardDimension();
+        return $playerHits === $game->getBoardGame()->boardDimension;
     }
 
 }

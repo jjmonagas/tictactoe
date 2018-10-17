@@ -10,7 +10,7 @@ namespace App\Application\Command\Utils;
 
 
 
-use App\Domain\Game\BoardFactory;
+use App\Domain\Game\BoardGameFactory;
 use App\Domain\Game\Entity\Game;
 use App\Domain\Game\GameBuilderInterface;
 use App\Domain\User\UserService;
@@ -54,10 +54,9 @@ class GamePlayerBWinnerBuilder implements GameBuilderInterface
 
     public function drawBoard(int $dimension)
     {
-        $boardFactory = new BoardFactory();
-        $board = $boardFactory->createBoardFilledWithOnePlayerToken($dimension, Game::PLAYER_B_TOKEN);
-        $this->game->setBoard($board);
-        $this->game->setBoardDimension($dimension);
+        $boardFactory = new BoardGameFactory();
+        $boardGame = $boardFactory->createBoardFilledWithOnePlayerToken($dimension, Game::PLAYER_B_TOKEN);
+        $this->game->addBoardGame($boardGame);
 
         return $this;
     }

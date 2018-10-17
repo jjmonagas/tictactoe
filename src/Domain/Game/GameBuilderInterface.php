@@ -9,6 +9,8 @@
 namespace App\Domain\Game;
 
 
+use App\Domain\Game\Entity\Game;
+
 interface GameBuilderInterface
 {
     public function addPlayerA(string $username);
@@ -18,4 +20,6 @@ interface GameBuilderInterface
     public function drawBoard(int $dimension);
 
     public function setName(string $name);
+
+    public function getGame() : Game;
 }

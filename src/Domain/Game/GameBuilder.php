@@ -48,11 +48,7 @@ class GameBuilder implements GameBuilderInterface
 
     public function drawBoard(int $dimension)
     {
-        $boardFactory = new BoardFactory();
-        $board = $boardFactory->createEmptyBoard($dimension);
-        $this->game->setBoard($board);
-        $this->game->setBoardDimension($dimension);
-
+        $this->game->createBoardGame($dimension);
         return $this;
     }
 

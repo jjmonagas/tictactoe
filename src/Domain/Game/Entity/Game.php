@@ -9,13 +9,14 @@
 namespace App\Domain\Game\Entity;
 
 
+use App\Domain\Game\BoardGameFactory;
+
 /**
  * Class Game
  * @package App\Domain\Game\Entity
  */
 class Game
 {
-    public const BOARD_DIMENSION_DEFAULT = 3;
 
     public const PLAYER_A_TOKEN = 'X';
     public const PLAYER_B_TOKEN = 'O';
@@ -33,14 +34,9 @@ class Game
     protected $playerB;
 
     /**
-     * @var array
+     * @var BoardGame
      */
-    protected $board;
-
-    /**
-     * @var int
-     */
-    protected $boardDimension;
+    protected $boardGame;
 
     /**
      * @var string
@@ -59,8 +55,6 @@ class Game
      */
     public function __construct()
     {
-        $this->boardDimension = self::BOARD_DIMENSION_DEFAULT;
-        $this->board = [];
     }
 
     /**
@@ -100,40 +94,13 @@ class Game
     }
 
     /**
-     * @return array
+     * @return BoardGame
      */
-    public function getBoard(): array
+    public function getBoardGame(): BoardGame
     {
-        return $this->board;
+        return $this->boardGame;
     }
 
-    /**
-     * @param array $board
-     * @return Game
-     */
-    public function setBoard(array $board): Game
-    {
-        $this->board = $board;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getBoardDimension(): int
-    {
-        return $this->boardDimension;
-    }
-
-    /**
-     * @param int $boardDimension
-     * @return Game
-     */
-    public function setBoardDimension(int $boardDimension): Game
-    {
-        $this->boardDimension = $boardDimension;
-        return $this;
-    }
 
     /**
      * @return string
@@ -153,6 +120,18 @@ class Game
         return $this;
     }
 
+    public function createBoardGame(int $dimension) {
+        $boardFactory = new BoardGameFactory();
+        $this->boardGame = $boardFactory->createEmptyBoard($dimension);
+    }
+
+    public function addBoardGame(BoardGame $boardGame) {
+        $this->boardGame = $boardGame;
+    }
+
+    public function updateGameStatus(array $board) {
+        $this->getBoardGame()->board = $board;
+    }
 
     public function start() {
         $this->hasEmptySlots = 0;

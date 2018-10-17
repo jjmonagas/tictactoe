@@ -46,7 +46,7 @@ class GameService implements GameInterface
      * @param string $gameName
      * @return Game
      */
-    public function getGame(string $gameName) :Game {
+    public function findGameByName(string $gameName) :Game {
         $game = new Game();
         $game->setName($gameName);
         return $game;
