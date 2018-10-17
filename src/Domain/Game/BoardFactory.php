@@ -6,14 +6,14 @@
  * Time: 23:16
  */
 
-namespace App\Utils;
+namespace App\Domain\Game;
 
 use App\Domain\Game\Entity\Movement;
 
 class BoardFactory
 {
 
-    public function createBoard(int $dimension) {
+    public function createEmptyBoard(int $dimension) {
         $board = null;
         for ($n=0;$n<$dimension;$n++) {
             for($m=0;$m<$dimension;$m++){
@@ -24,11 +24,11 @@ class BoardFactory
     }
 
 
-    public function createBoardWithToken(int $dimension, string $userToken) {
+    public function createBoardFilledWithOnePlayerToken(int $dimension, string $playerToken) {
         $board = null;
         for ($n=0;$n<$dimension;$n++) {
             for($m=0;$m<$dimension;$m++){
-                $board[$n][$m] = $userToken;
+                $board[$n][$m] = $playerToken;
             }
         }
         return $board;

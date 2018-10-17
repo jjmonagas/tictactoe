@@ -9,16 +9,15 @@
 namespace App\Domain\Game\Entity;
 
 
-use App\Domain\User\Entity\User;
 
 class Movement
 {
     public const EMPTY_MOVEMENT = '';
 
     /**
-     * @var User
+     * @var Player
      */
-    protected $user;
+    protected $player;
 
     /**
      * @var Game
@@ -41,20 +40,20 @@ class Movement
     protected $createdAt;
 
     /**
-     * @return User
+     * @return Player
      */
-    public function getUser(): User
+    public function getPlayer(): Player
     {
-        return $this->user;
+        return $this->player;
     }
 
     /**
-     * @param User $user
+     * @param Player $player
      * @return Movement
      */
-    public function setUser(User $user): Movement
+    public function setPlayer(Player $player): Movement
     {
-        $this->user = $user;
+        $this->player = $player;
         return $this;
     }
 

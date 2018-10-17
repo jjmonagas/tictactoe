@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Command;
+namespace App\Application\Command;
 
+use App\Application\Command\Utils\GameNoWinnerBuilder;
+use App\Application\Command\Utils\GamePlayerAWinnerBuilder;
+use App\Application\Command\Utils\GamePlayerBWinnerBuilder;
 use App\Domain\Game\Entity\Game;
+use App\Domain\Game\GameBuilder;
 use App\Domain\Game\GameService;
 use App\Domain\Game\MovementService;
 use App\Domain\User\UserService;
-use App\Utils\GameBuilder;
-use App\Utils\GameNoWinnerBuilder;
-use App\Utils\GamePlayerAWinnerBuilder;
-use App\Utils\GamePlayerBWinnerBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -79,8 +79,8 @@ class TictactoeCheckFinishedWinnerCommand extends Command
         $gameName = $input->getArgument('game-name');
         $winner = $input->getOption('winner');
 
-        $userA = $this->userManager->getUser($usernameA);
-        $userB = $this->userManager->getUser($usernameB);
+        $playerA = $this->userManager->getUser($usernameA);
+        $playerB = $this->userManager->getUser($usernameB);
 
         $gameBuilder = $this->gameDefaultBuilder;
         if ($winner !== null) {
@@ -94,10 +94,10 @@ class TictactoeCheckFinishedWinnerCommand extends Command
         $io->section('BOARD');
         var_dump($newGame->getBoard());
 
-        if ($this->movementManager->isUserWinner($newGame, $userA)) {
-            $io->success('Congratulations ' . $userA->getUsername() . '! You are the winner!!');
-        } else if ($this->movementManager->isUserWinner($newGame, $userB)) {
-            $io->success('Congratulations ' . $userB->getUsername() . '! You are the winner!!');
+        if ($this->movementManager->isPlayerWinner($newGame, $playerA)) {
+            $io->success('Congratulations ' . $playerA->getUsername() . '! You are the winner!!');
+        } else if ($this->movementManager->isPlayerWinner($newGame, $playerB)) {
+            $io->success('Congratulations ' . $playerB->getUsername() . '! You are the winner!!');
         } else if (!$this->movementManager->hasFreeMovements($newGame)) {
             $io->warning('GAME OVER! No more movements left');
         } else {

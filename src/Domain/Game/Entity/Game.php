@@ -8,28 +8,27 @@
 
 namespace App\Domain\Game\Entity;
 
-use App\Domain\User\Entity\User;
 
 /**
  * Class Game
- * @package App\Model
+ * @package App\Domain\Game\Entity
  */
 class Game
 {
     public const BOARD_DIMENSION_DEFAULT = 3;
 
-    public const USER_A_TOKEN = 'X';
-    public const USER_B_TOKEN = 'O';
+    public const PLAYER_A_TOKEN = 'X';
+    public const PLAYER_B_TOKEN = 'O';
 
-    public const NO_USER_TOKEN = '-';
+    public const NO_PLAYER_TOKEN = '-';
 
     /**
-     * @var User
+     * @var Player
      */
     protected $playerA;
 
     /**
-     * @var User
+     * @var Player
      */
     protected $playerB;
 
@@ -65,36 +64,36 @@ class Game
     }
 
     /**
-     * @return User
+     * @return Player
      */
-    public function getPlayerA(): User
+    public function getPlayerA(): Player
     {
         return $this->playerA;
     }
 
     /**
-     * @param User $playerA
+     * @param Player $playerA
      * @return Game
      */
-    public function setPlayerA(User $playerA): Game
+    public function addPlayerA(Player $playerA): Game
     {
         $this->playerA = $playerA;
         return $this;
     }
 
     /**
-     * @return User
+     * @return Player
      */
-    public function getPlayerB(): User
+    public function getPlayerB(): Player
     {
         return $this->playerB;
     }
 
     /**
-     * @param User $playerB
+     * @param Player $playerB
      * @return Game
      */
-    public function setPlayerB(User $playerB): Game
+    public function addPlayerB(Player $playerB): Game
     {
         $this->playerB = $playerB;
         return $this;

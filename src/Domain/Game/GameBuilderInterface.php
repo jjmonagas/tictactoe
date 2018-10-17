@@ -6,8 +6,7 @@
  * Time: 22:41
  */
 
-namespace App\Utils;
-
+namespace App\Domain\Game;
 
 
 interface GameBuilderInterface

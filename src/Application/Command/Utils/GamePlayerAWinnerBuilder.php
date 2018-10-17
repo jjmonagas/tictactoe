@@ -6,12 +6,13 @@
  * Time: 22:11
  */
 
-namespace App\Utils;
+namespace App\Application\Command\Utils;
 
-
-
+use App\Domain\Game\BoardFactory;
 use App\Domain\Game\Entity\Game;
+use App\Domain\Game\GameBuilderInterface;
 use App\Domain\User\UserService;
+
 
 class GamePlayerAWinnerBuilder implements GameBuilderInterface
 {
@@ -37,7 +38,7 @@ class GamePlayerAWinnerBuilder implements GameBuilderInterface
     {
         //create if not exists
         $playerA = $this->userManager->createUser($username);
-        $this->game->setPlayerA($playerA);
+        $this->game->addPlayerA($playerA);
 
         return $this;
     }
@@ -45,7 +46,7 @@ class GamePlayerAWinnerBuilder implements GameBuilderInterface
     public function addPlayerB(string $username)
     {
         $playerB = $this->userManager->createUser($username);
-        $this->game->setPlayerB($playerB);
+        $this->game->addPlayerB($playerB);
 
         return $this;
     }
@@ -53,7 +54,7 @@ class GamePlayerAWinnerBuilder implements GameBuilderInterface
     public function drawBoard(int $dimension)
     {
         $boardFactory = new BoardFactory();
-        $board = $boardFactory->createBoardWithToken($dimension, Game::USER_A_TOKEN);
+        $board = $boardFactory->createBoardFilledWithOnePlayerToken($dimension, Game::PLAYER_A_TOKEN);
         $this->game->setBoard($board);
         $this->game->setBoardDimension($dimension);
 

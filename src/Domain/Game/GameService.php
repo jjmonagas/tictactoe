@@ -11,7 +11,7 @@ namespace App\Domain\Game;
 
 
 use App\Domain\Game\Entity\Game;
-use App\Utils\GameBuilderInterface;
+
 
 class GameService implements GameInterface
 {
@@ -38,8 +38,8 @@ class GameService implements GameInterface
      * @param string $username
      * @return string
      */
-    public function findUserTokenByUsername(Game $game, string $username) :string {
-        return $game->getPlayerA()->getUsername() === $username ? Game::USER_A_TOKEN : Game::USER_B_TOKEN;
+    public function findPlayerTokenByUsername(Game $game, string $username) :string {
+        return $game->getPlayerA()->getUsername() === $username ? Game::PLAYER_A_TOKEN : Game::PLAYER_B_TOKEN;
     }
 
     /**

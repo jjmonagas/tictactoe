@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Command;
+namespace App\Application\Command;
 
 use App\Domain\Game\Entity\Game;
+use App\Domain\Game\GameBuilder;
 use App\Domain\Game\GameService;
 use App\Domain\Game\MovementService;
 use App\Domain\User\UserService;
-use App\Utils\GameBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,6 +27,7 @@ class TictactoeMovementCommand extends Command
      * @param MovementService $movementManager
      * @param UserService $userManager
      * @param GameService $gameManager
+     * @param GameBuilder $gameBuilder
      */
     public function __construct(MovementService $movementManager, UserService $userManager, GameService $gameManager, GameBuilder $gameBuilder)
     {
@@ -66,6 +67,6 @@ class TictactoeMovementCommand extends Command
         $io->section('Board');
         var_dump($newMovement->getGame()->getBoard());
 
-        $io->success('User ' . $newMovement->getUser()->getUsername() . ' has marked board[' . $newMovement->getCoordinateX() . '][' . $newMovement->getCoordinateY() . ']');
+        $io->success('User ' . $newMovement->getPlayer()->getUsername() . ' has marked board[' . $newMovement->getCoordinateX() . '][' . $newMovement->getCoordinateY() . ']');
     }
 }

@@ -7,11 +7,13 @@
  */
 namespace App\Domain\User\Entity;
 
+use App\Domain\Game\Entity\Player;
+
 /**
  * Class User
  * @package App\Model
  */
-class User
+class User implements Player
 {
     /**
      * @var string

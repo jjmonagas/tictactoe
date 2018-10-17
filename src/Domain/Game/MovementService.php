@@ -10,7 +10,8 @@ namespace App\Domain\Game;
 
 use App\Domain\Game\Entity\Game;
 use App\Domain\Game\Entity\Movement;
-use App\Domain\User\Entity\User;
+use App\Domain\Game\Entity\Player;
+
 
 class MovementService implements MovementInterface
 {
@@ -28,17 +29,17 @@ class MovementService implements MovementInterface
 
 
     /**
-     * @param User $user
+     * @param Player $player
      * @param Game $game
      * @param int $coordinateX
      * @param int $coordinateY
      * @return Movement
      */
-    public function makeMovement(User $user, Game $game, int $coordinateX, int $coordinateY) :Movement {
+    public function makeMovement(Player $player, Game $game, int $coordinateX, int $coordinateY) :Movement {
         $movement = null;
         $board = $game->getBoard();
         if ($board[$coordinateX][$coordinateY] === Movement::EMPTY_MOVEMENT) {
-            $userToken = $this->gameManager->findUserTokenByUsername($game, $user->getUsername());
+            $userToken = $this->gameManager->findPlayerTokenByUsername($game, $player->getUsername());
             $board[$coordinateX][$coordinateY] = $userToken;
             //TODO save Game
             $game->setBoard($board);
@@ -46,7 +47,7 @@ class MovementService implements MovementInterface
             //TODO Save movement as LOGS
             $movement = new Movement();
             $movement->setGame($game)
-                ->setUser($user)
+                ->setPlayer($player)
                 ->setCoordinateX($coordinateX)
                 ->setCoordinateY($coordinateY);
         }
@@ -55,13 +56,13 @@ class MovementService implements MovementInterface
 
     /**
      * @param Game $game
-     * @param User $user
+     * @param Player $player
      * @return bool
      */
-    public function isUserWinner(Game $game, User $user) :bool {
-        return $this->winnerDiagonalMovements($game, $user) ||
-            $this->winnerHorizontalMovements($game, $user) ||
-            $this->winnerVerticalMovements($game, $user);
+    public function isPlayerWinner(Game $game, Player $player) :bool {
+        return $this->winnerDiagonalMovements($game, $player) ||
+            $this->winnerHorizontalMovements($game, $player) ||
+            $this->winnerVerticalMovements($game, $player);
     }
 
     /**
@@ -86,76 +87,76 @@ class MovementService implements MovementInterface
 
     /**
      * @param Game $game
-     * @param User $user
+     * @param Player $player
      * @return bool
      */
-    private function winnerHorizontalMovements(Game $game, User $user) :bool {
-        $userHits = 0;
-        $userToken = $this->gameManager->findUserTokenByUsername($game, $user->getUsername());
+    private function winnerHorizontalMovements(Game $game, Player $player) :bool {
+        $playerHits = 0;
+        $playerToken = $this->gameManager->findPlayerTokenByUsername($game, $player->getUsername());
         $boardDimension = $game->getBoardDimension();
         $board = $game->getBoard();
         for ($n = 0; $n < $boardDimension; $n++) {
             for($m = 0; $m < $boardDimension; $m++) {
-                if ($board[$n][$m] === $userToken) {
-                    $userHits++;
+                if ($board[$n][$m] === $playerToken) {
+                    $playerHits++;
                 }
             }
         }
-        return $this->checkWinnerRow($userHits, $game);
+        return $this->checkWinnerRow($playerHits, $game);
     }
 
     /**
      * @param Game $game
-     * @param User $user
+     * @param Player $player
      * @return bool
      */
-    private function winnerVerticalMovements(Game $game, User $user) :bool {
-        $userHits = 0;
-        $userToken = $this->gameManager->findUserTokenByUsername($game, $user->getUsername());
+    private function winnerVerticalMovements(Game $game, Player $player) :bool {
+        $playerHits = 0;
+        $playerToken = $this->gameManager->findPlayerTokenByUsername($game, $player->getUsername());
         $boardDimension = $game->getBoardDimension();
         $board = $game->getBoard();
         for ($n = 0; $n < $boardDimension; $n++) {
             for($m = 0; $m < $boardDimension; $m++) {
-                if ($board[$m][$n] === $userToken) {
-                    $userHits++;
+                if ($board[$m][$n] === $playerToken) {
+                    $playerHits++;
                 }
             }
         }
-        return $this->checkWinnerRow($userHits, $game);
+        return $this->checkWinnerRow($playerHits, $game);
     }
 
     /**
      * @param Game $game
-     * @param User $user
+     * @param Player $player
      * @return bool
      */
-    private function winnerDiagonalMovements(Game $game, User $user) :bool {
-        $userHitsFirstDiagonal = 0;
-        $userHitsSecondDiagonal = 0;
-        $userToken = $this->gameManager->findUserTokenByUsername($game, $user->getUsername());
+    private function winnerDiagonalMovements(Game $game, Player $player) :bool {
+        $playerHitsFirstDiagonal = 0;
+        $playerHitsSecondDiagonal = 0;
+        $playerToken = $this->gameManager->findPlayerTokenByUsername($game, $player->getUsername());
         $boardDimension = $game->getBoardDimension();
         $board = $game->getBoard();
         for ($n = 0; $n < $boardDimension; $n++) {
-            if ($board[$n][$n] === $userToken) {
-                $userHitsFirstDiagonal++;
+            if ($board[$n][$n] === $playerToken) {
+                $playerHitsFirstDiagonal++;
             }
             $mSecondDiagonal = ($boardDimension - 1) - $n;
-            if ($board[$n][$mSecondDiagonal] === $userToken) {
-                $userHitsSecondDiagonal++;
+            if ($board[$n][$mSecondDiagonal] === $playerToken) {
+                $playerHitsSecondDiagonal++;
             }
         }
 
-        return $this->checkWinnerRow($userHitsFirstDiagonal, $game) || $this->checkWinnerRow($userHitsSecondDiagonal, $game);
+        return $this->checkWinnerRow($playerHitsFirstDiagonal, $game) || $this->checkWinnerRow($playerHitsSecondDiagonal, $game);
     }
 
 
     /**
-     * @param int $userHits
+     * @param int $playerHits
      * @param Game $game
      * @return bool
      */
-    private function checkWinnerRow(int $userHits, Game $game) :bool {
-        return $userHits === $game->getBoardDimension();
+    private function checkWinnerRow(int $playerHits, Game $game) :bool {
+        return $playerHits === $game->getBoardDimension();
     }
 
 }

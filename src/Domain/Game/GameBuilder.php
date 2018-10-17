@@ -5,15 +5,12 @@
  * Date: 9/10/18
  * Time: 22:11
  */
-
-namespace App\Utils;
-
-
+namespace App\Domain\Game;
 
 use App\Domain\Game\Entity\Game;
 use App\Domain\User\UserService;
 
-class GameNoWinnerBuilder implements GameBuilderInterface
+class GameBuilder implements GameBuilderInterface
 {
     /**
      * @var Game
@@ -23,7 +20,7 @@ class GameNoWinnerBuilder implements GameBuilderInterface
     protected $userManager;
 
     /**
-     * GameUserAWinnerBuilder constructor.
+     * GameBuilder constructor.
      * @param UserService $userManager
      */
     public function __construct(UserService $userManager)
@@ -35,9 +32,8 @@ class GameNoWinnerBuilder implements GameBuilderInterface
 
     public function addPlayerA(string $username)
     {
-        //create if not exists
         $playerA = $this->userManager->createUser($username);
-        $this->game->setPlayerA($playerA);
+        $this->game->addPlayerA($playerA);
 
         return $this;
     }
@@ -45,7 +41,7 @@ class GameNoWinnerBuilder implements GameBuilderInterface
     public function addPlayerB(string $username)
     {
         $playerB = $this->userManager->createUser($username);
-        $this->game->setPlayerB($playerB);
+        $this->game->addPlayerB($playerB);
 
         return $this;
     }
@@ -53,7 +49,7 @@ class GameNoWinnerBuilder implements GameBuilderInterface
     public function drawBoard(int $dimension)
     {
         $boardFactory = new BoardFactory();
-        $board = $boardFactory->createBoardWithToken($dimension, Game::NO_USER_TOKEN);
+        $board = $boardFactory->createEmptyBoard($dimension);
         $this->game->setBoard($board);
         $this->game->setBoardDimension($dimension);
 

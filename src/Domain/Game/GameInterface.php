@@ -11,11 +11,11 @@ namespace App\Domain\Game;
 
 
 use App\Domain\Game\Entity\Game;
-use App\Utils\GameBuilderInterface;
+
 
 interface GameInterface
 {
     public function startNewGame(string $usernameA, string $usernameB, string $gameName, int $boardDimension, GameBuilderInterface $gameBuilder) :Game;
-    public function findUserTokenByUsername(Game $game, string $username) :string;
+    public function findPlayerTokenByUsername(Game $game, string $username) :string;
     public function getGame(string $gameName) :Game;
 }
