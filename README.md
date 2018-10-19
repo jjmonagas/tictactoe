@@ -1,8 +1,5 @@
 # tictactoe [![Build Status](https://travis-ci.org/jjmonagas/tictactoe.svg?branch=master)](https://travis-ci.org/jjmonagas/tictactoe)
-TIC TAC TOE as a service
-
-* master brach --> Main branch
-* feature/ddd-version branch --> Domain Driven Design version
+TIC TAC TOE as a service - Domain Driven Design
 
 ## Requirements
 
@@ -95,19 +92,3 @@ php bin/phpunit tests/Command/TictactoeCheckFinishedWinnerCommandTest.php
 ```
 php bin/phpunit tests/Utils/UserFactoryTest.php
 ```
-
-
-## Where to find my code
-
-This is a Symfony4 project with its new directory structure:
-
-* /src -->  Source code
-* /src/Command/TictactoeCreateUserCommand.php --> Command line Use Case 'Create users'
-* /src/Command/TictactoeDeleteUserCommand.php --> Command line Use Case 'Delete users'
-* /src/Command/TictactoePlayCommand.php --> Command line Use Case 'Start a new game between two users'
-* /src/Command/TictactoeMovementCommand.php --> Command line Use Case 'A user doing a move in a game'
-* /src/Command/TictactoeCheckFinishedWinnerCommand.php --> Command line Use Case 'To know if a game has finished and if there is a winner'
-* /src/Model/ --> Data Models
-* /src/Services/ --> Symfony services and interfaces for API
-* /src/Utils/ --> Helpers and Factories and Builders
-* /tests --> Unit and Functional tests code
