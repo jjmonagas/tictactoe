@@ -3,7 +3,7 @@
 namespace App\Tests\Command;
 
 
-use App\Command\TictactoeCheckFinishedWinnerCommand;
+use App\Application\Command\TictactoeCheckFinishedWinnerCommand;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -22,13 +22,13 @@ class TictactoeCheckFinishedWinnerCommandTest extends KernelTestCase
 
 
         $application->add(new TictactoeCheckFinishedWinnerCommand(
-            $container->get('App\Services\MovementsManager'),
-            $container->get('App\Services\UserManager'),
-            $container->get('App\Services\GameManager'),
-            $container->get('App\Utils\GameBuilder'),
-            $container->get('App\Utils\GameUserAWinnerBuilder'),
-            $container->get('App\Utils\GameUserBWinnerBuilder'),
-            $container->get('App\Utils\GameNoWinnerBuilder')
+            $container->get('App\Domain\Game\MovementService'),
+            $container->get('App\Domain\User\UserService'),
+            $container->get('App\Domain\Game\GameService'),
+            $container->get('App\Domain\Game\GameBuilder'),
+            $container->get('App\Application\Command\Utils\GamePlayerAWinnerBuilder'),
+            $container->get('App\Application\Command\Utils\GamePlayerBWinnerBuilder'),
+            $container->get('App\Application\Command\Utils\GameNoWinnerBuilder')
             ));
         $command = $application->find('tictactoe:check:finished:winner');
         $commandTester = new CommandTester($command);
