@@ -2,9 +2,13 @@
 
 namespace App\Application\Command;
 
-use App\Domain\Game\Entity\Game;
-use App\Domain\Game\GameBuilder;
+
+use App\Domain\Game\Factory\GameBoardFactory;
+use App\Domain\Game\GameBoardPrinter;
+use App\Domain\Game\Model\PlayerToken;
+
 use App\Domain\Game\GameService;
+use App\Domain\User\Factory\UserFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,20 +18,20 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class TictactoePlayCommand extends Command
 {
-    protected static $defaultName = 'tictactoe:play';
+    protected static $defaultName = 'tictactoe:play:start';
 
     protected $gameManager;
-    protected $gameBuilder;
+    protected $gameBoardPrinter;
 
     /**
      * TictactoePlayCommand constructor.
      * @param GameService $gameManager
-     * @param GameBuilder $gameBuilder
+     * @param GameBoardPrinter $gameBoardPrinter
      */
-    public function __construct(GameService $gameManager, GameBuilder $gameBuilder)
+    public function __construct(GameService $gameManager, GameBoardPrinter $gameBoardPrinter)
     {
         $this->gameManager = $gameManager;
-        $this->gameBuilder = $gameBuilder;
+        $this->gameBoardPrinter = $gameBoardPrinter;
 
         parent::__construct();
     }
@@ -56,12 +60,22 @@ class TictactoePlayCommand extends Command
             $io->warning('Impossible to create a game with that dimension. Minimum board is with dimension 3');
         } else {
 
-            $newGame = $this->gameManager->startNewGame($usernameA, $usernameB, $gameName, $dimension, $this->gameBuilder);
+            $userFactory = new UserFactory();
+            $playerA = $userFactory->createUser($usernameA);
+            $playerB = $userFactory->createUser($usernameB);
+
+            $gameBoardFactory = new GameBoardFactory();
+            $gameBoard = $gameBoardFactory->createEmptyBoard($dimension);
+
+            $newGame = $this->gameManager->startNewGame($playerA, $playerB, $gameName, $gameBoard);
 
             $io->success('A new game ' . $newGame->getName() . ' created! Let\'s play!');
             $io->section('Some instructions');
-            $io->note('Player token for ' . $newGame->getPlayerA()->getUsername() . ' is ' . Game::PLAYER_A_TOKEN);
-            $io->note('Player token for ' . $newGame->getPlayerB()->getUsername() . ' is ' . Game::PLAYER_B_TOKEN);
+            $io->note('Player token for ' . $newGame->getPlayerA()->getUsername() . ' is ' . PlayerToken::PLAYER_TOKEN_X);
+            $io->note('Player token for ' . $newGame->getPlayerB()->getUsername() . ' is ' . PlayerToken::PLAYER_TOKEN_O);
+
+            $io->section('Game Board');
+            $this->gameBoardPrinter->printBoard($newGame->getGameBoard());
         }
 
 

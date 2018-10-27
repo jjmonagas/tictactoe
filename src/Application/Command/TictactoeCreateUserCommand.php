@@ -13,15 +13,15 @@ class TictactoeCreateUserCommand extends Command
 {
     protected static $defaultName = 'tictactoe:create-user';
 
-    protected $userManager;
+    protected $userService;
 
     /**
      * TictactoeCreateUserCommand constructor.
-     * @param UserService $userManager
+     * @param UserService $userService
      */
-    public function __construct(UserService $userManager)
+    public function __construct(UserService $userService)
     {
-        $this->userManager = $userManager;
+        $this->userService = $userService;
 
         parent::__construct();
     }
@@ -40,7 +40,7 @@ class TictactoeCreateUserCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $username = $input->getArgument('username');
 
-        $newUser = $this->userManager->createUser($username);
+        $newUser = $this->userService->createUser($username);
 
         $io->success('New User ' . $newUser->getUsername() . ' created!');
     }
