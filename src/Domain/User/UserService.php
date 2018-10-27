@@ -1,17 +1,29 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jjmonagas
- * Date: 9/10/18
- * Time: 22:01
- */
 namespace App\Domain\User;
 
 
-use App\Domain\User\Entity\User;
+use App\Domain\User\Factory\UserFactory;
+use App\Domain\User\Model\User;
+use App\Infrastructure\Game\GameRepository;
+use App\Infrastructure\User\UserRepository;
 
 class UserService implements UserInterface
 {
+
+    protected $userRepository;
+    protected $gameRepository;
+
+    /**
+     * UserService constructor.
+     * @param UserRepository $userRepository
+     * @param GameRepository $gameRepository
+     */
+    public function __construct(UserRepository $userRepository, GameRepository $gameRepository)
+    {
+        $this->userRepository = $userRepository;
+        $this->gameRepository = $gameRepository;
+    }
+
 
     /**
      * @param string $username
@@ -23,23 +35,23 @@ class UserService implements UserInterface
     }
 
     /**
-     * @param string $username
+     * @param User $user
      * @return string
      */
-    public function deleteUser(string $username) :string {
-        //Find user by username
-        //remove user
-        //DISPATCH EVENT to remove GAMES
-        //return message
-        return 'User ' . $username . ' deleted';
+    public function deleteUser(User $user) :string {
+        $this->gameRepository->removeAllGamesByUser($user);
+        $this->userRepository->removeUser($user);
+        //DISPATCH EVENT USER_DELETE_EVENT
+        return 'User ' . $user->getUsername() . ' deleted';
     }
 
     /**
      * @param string $username
      * @return User
      */
-    public function getUser(string $username) :User {
-        return new User($username);
+    public function findUserByUsername(string $username) :User {
+        return $this->userRepository->findUserByUsername($username);
     }
+
 
 }
