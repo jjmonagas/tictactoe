@@ -85,7 +85,7 @@ php bin/phpunit
 
 ##### Run Functional Command test
 ```
-php bin/phpunit tests/Command/TictactoeCheckFinishedWinnerCommandTest.php
+php bin/phpunit tests/Application/Command/TictactoeCheckFinishedWinnerCommandTest.php
 ```
 
 ##### Run Unit tests GAME
