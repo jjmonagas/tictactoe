@@ -31,23 +31,23 @@ php bin/console tictactoe:delete-user Charles
 
 ##### Start a new game between two users (Default board dimension 3x3)
 ```
-php bin/console tictactoe:play Charles Mary 'Mi Tic tac'
+php bin/console tictactoe:play:start Charles Mary 'Mi Tic tac'
 ```
 
 
 ##### Start a new game between two users (Board dimension 5x5)
 ```
-php bin/console tictactoe:play Charles Mary 'Mi Tic tac' -d 5
+php bin/console tictactoe:play:tart Charles Mary 'Mi Tic tac' -d 5
 ```
 
 ##### Start a new game between two users (Invalid Board dimension 2x2)
 ```
-php bin/console tictactoe:play Charles Mary 'Mi Tic tac' -d 2
+php bin/console tictactoe:play:start Charles Mary 'Mi Tic tac' -d 2
 ```
 
 ##### A user doing a move in a game
 ```
-php bin/console tictactoe:movement Mary 'Mi Tic Tac Board' 1 2
+php bin/console tictactoe:mark:cell Mary 'Mi Tic Tac Board' 1 2
 ```
 
 ##### To know if a game has finished and if there is a winner (No winner, No finished)
@@ -88,7 +88,17 @@ php bin/phpunit
 php bin/phpunit tests/Command/TictactoeCheckFinishedWinnerCommandTest.php
 ```
 
-##### Run Unit test (Check Create User by username)
+##### Run Unit tests GAME
 ```
-php bin/phpunit tests/Utils/UserFactoryTest.php
+php bin/phpunit tests/Domain/Game/Factory/GameBoardFactoryTest.php
+php bin/phpunit tests/Domain/Game/Factory/GameBuilderTest.php
+php bin/phpunit tests/Domain/Game/Model/GameBoardTest.php
+php bin/phpunit tests/Domain/Game/Model/GameTest.php
+php bin/phpunit tests/Domain/Game/GameServiceTest.php
+```
+
+##### Run Unit tests USER
+```
+php bin/phpunit tests/Domain/User/Factory/UserFactoryTest.php
+php bin/phpunit tests/Domain/User/UserServiceTest.php
 ```
