@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jjmonagas
- * Date: 26/10/18
- * Time: 20:24
- */
-
 namespace App\Domain\Game;
 
 
