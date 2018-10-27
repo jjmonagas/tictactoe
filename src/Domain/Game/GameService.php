@@ -1,36 +1,41 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jjmonagas
- * Date: 9/10/18
- * Time: 22:56
- */
-
 namespace App\Domain\Game;
 
+use App\Domain\Game\Factory\GameBuilder;
+use App\Domain\Game\Model\Game;
+use App\Domain\Game\Model\GameBoard;
+use App\Domain\Game\Model\Player;
 
 
-use App\Domain\Game\Entity\Game;
-
-
-class GameService implements GameInterface
+class GameService
 {
+
+    protected $gameBuilder;
+
     /**
-     * @param string $usernameA
-     * @param string $usernameB
-     * @param string $gameName
-     * @param int $boardDimension
-     * @param GameBuilderInterface $gameBuilder
-     * @return mixed
+     * GameService constructor.
+     * @param GameBuilder $gameBuilder
      */
-    public function startNewGame(string $usernameA, string $usernameB, string $gameName, int $boardDimension, GameBuilderInterface $gameBuilder) : Game
+    public function __construct(GameBuilder $gameBuilder)
     {
-        $gameBuilder->addPlayerA($usernameA);
-        $gameBuilder->addPlayerB($usernameB);
-        $gameBuilder->drawBoard($boardDimension);
-        $gameBuilder->setName($gameName)
-        ;
-        return $gameBuilder->getGame();
+        $this->gameBuilder = $gameBuilder;
+    }
+
+
+    /**
+     * @param Player $playerA
+     * @param Player $playerB
+     * @param string $gameName
+     * @param GameBoard $gameBoard
+     * @return Game
+     */
+    public function startNewGame(Player $playerA, Player $playerB, string $gameName, GameBoard $gameBoard) : Game
+    {
+        $this->gameBuilder->addPlayerA($playerA);
+        $this->gameBuilder->addPlayerB($playerB);
+        $this->gameBuilder->drawBoard($gameBoard);
+        $this->gameBuilder->setGameName($gameName);
+        return $this->gameBuilder->getGame();
     }
 
     /**
@@ -39,7 +44,7 @@ class GameService implements GameInterface
      * @return string
      */
     public function findPlayerTokenByUsername(Game $game, string $username) :string {
-        return $game->getPlayerA()->getUsername() === $username ? Game::PLAYER_A_TOKEN : Game::PLAYER_B_TOKEN;
+        return $game->getPlayerA()->getUsername() === $username ? $game->getPlayerAToken() : $game->getPlayerBToken();
     }
 
     /**

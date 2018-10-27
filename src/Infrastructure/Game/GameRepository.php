@@ -1,13 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jjmonagas
- * Date: 16/10/18
- * Time: 19:15
- */
 namespace App\Infrastructure\Game;
+
+use App\Domain\User\Model\User;
 
 class GameRepository
 {
+
+    public function removeAllGamesByUser(User $user) {
+        return 'All games removed to ' . $user->getUsername();
+    }
 
 }

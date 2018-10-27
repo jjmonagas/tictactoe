@@ -14,15 +14,15 @@ class TictactoeDeleteUserCommand extends Command
 {
     protected static $defaultName = 'tictactoe:delete-user';
 
-    protected $userManager;
+    protected $userService;
 
     /**
-     * TictactoeCreateUserCommand constructor.
-     * @param UserService $userManager
+     * TictactoeDeleteUserCommand constructor.
+     * @param UserService $userService
      */
-    public function __construct(UserService $userManager)
+    public function __construct(UserService $userService)
     {
-        $this->userManager = $userManager;
+        $this->userService = $userService;
 
         parent::__construct();
     }
@@ -40,7 +40,8 @@ class TictactoeDeleteUserCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $username = $input->getArgument('username');
 
-        $response = $this->userManager->deleteUser($username);
+        $user = $this->userService->findUserByUsername($username);
+        $response = $this->userService->deleteUser($user);
 
         $io->success($response);
     }

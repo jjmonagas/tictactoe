@@ -2,13 +2,12 @@
 
 namespace App\Application\Command;
 
-use App\Application\Command\Utils\GameNoWinnerBuilder;
-use App\Application\Command\Utils\GamePlayerAWinnerBuilder;
-use App\Application\Command\Utils\GamePlayerBWinnerBuilder;
-use App\Domain\Game\Entity\BoardGame;
-use App\Domain\Game\GameBuilder;
+
+use App\Domain\Game\Factory\GameBoardFactory;
+use App\Domain\Game\GameBoardService;
+use App\Domain\Game\GameBoardPrinter;
 use App\Domain\Game\GameService;
-use App\Domain\Game\MovementService;
+use App\Domain\Game\Model\PlayerToken;
 use App\Domain\User\UserService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,40 +20,28 @@ class TictactoeCheckFinishedWinnerCommand extends Command
 {
     protected static $defaultName = 'tictactoe:check:finished:winner';
 
-    protected $movementManager;
-    protected $userManager;
-    protected $gameManager;
-    protected $gameDefaultBuilder;
-    protected $gameUserAWinnerBuilder;
-    protected $gameUserBWinnerBuilder;
-    protected $gameNoWinnerBuilder;
+    protected $userService;
+    protected $gameService;
+    protected $gameBoardPrinter;
+    protected $gameBoardService;
 
     /**
      * TictactoeCheckFinishedWinnerCommand constructor.
-     * @param MovementService $movementManager
-     * @param UserService $userManager
-     * @param GameService $gameManager
-     * @param GameBuilder $gameBuilder
-     * @param GamePlayerAWinnerBuilder $gameUserAWinnerBuilder
-     * @param GamePlayerBWinnerBuilder $gameUserBWinnerBuilder
-     * @param GameNoWinnerBuilder $gameNoWinnerBuilder
+     * @param UserService $userService
+     * @param GameService $gameService
+     * @param GameBoardPrinter $gameBoardPrinter
+     * @param GameBoardService $gameBoardService
      */
-    public function __construct(MovementService $movementManager,
-                                UserService $userManager,
-                                GameService $gameManager,
-                                GameBuilder $gameBuilder,
-                                GamePlayerAWinnerBuilder $gameUserAWinnerBuilder,
-                                GamePlayerBWinnerBuilder $gameUserBWinnerBuilder,
-                                GameNoWinnerBuilder $gameNoWinnerBuilder)
+    public function __construct(UserService $userService,
+                                GameService $gameService,
+                                GameBoardPrinter $gameBoardPrinter,
+                                GameBoardService $gameBoardService
+    )
     {
-        $this->movementManager = $movementManager;
-        $this->userManager = $userManager;
-        $this->gameManager = $gameManager;
-
-        $this->gameDefaultBuilder = $gameBuilder;
-        $this->gameUserAWinnerBuilder = $gameUserAWinnerBuilder;
-        $this->gameUserBWinnerBuilder = $gameUserBWinnerBuilder;
-        $this->gameNoWinnerBuilder = $gameNoWinnerBuilder;
+        $this->userService = $userService;
+        $this->gameService = $gameService;
+        $this->gameBoardPrinter = $gameBoardPrinter;
+        $this->gameBoardService = $gameBoardService;
 
         parent::__construct();
     }
@@ -79,26 +66,29 @@ class TictactoeCheckFinishedWinnerCommand extends Command
         $gameName = $input->getArgument('game-name');
         $winner = $input->getOption('winner');
 
-        $playerA = $this->userManager->getUser($usernameA);
-        $playerB = $this->userManager->getUser($usernameB);
+        $playerA = $this->userService->findUserByUsername($usernameA);
+        $playerB = $this->userService->findUserByUsername($usernameB);
 
-        $gameBuilder = $this->gameDefaultBuilder;
+        $gameBoardFactory = new GameBoardFactory();
+        $gameBoard = $gameBoardFactory->createEmptyBoard();
+
+        $newGame = $this->gameService->startNewGame($playerA, $playerB, $gameName, $gameBoard);
+
         if ($winner !== null) {
-            $newGameBuilder = $winner === 'A' ? $this->gameUserAWinnerBuilder : null;
-            $newGameBuilder = $newGameBuilder === null && $winner === 'B' ? $this->gameUserBWinnerBuilder : $newGameBuilder;
-            $newGameBuilder = $newGameBuilder === null && $winner === '0' ? $this->gameNoWinnerBuilder : $newGameBuilder;
-            $gameBuilder = $newGameBuilder ?? $gameBuilder;
+            $winnerPlayerToken = $winner === 'A' ? PlayerToken::PLAYER_TOKEN_X : PlayerToken::PLAYER_TOKEN_EXTRA;
+            $winnerPlayerToken = $winner === 'B' ? PlayerToken::PLAYER_TOKEN_O : $winnerPlayerToken;
+            $this->gameBoardService->markAllCellsWithPlayerToken($newGame->getGameBoard(), $winnerPlayerToken);
         }
-        $newGame = $this->gameManager->startNewGame($usernameA, $usernameB, $gameName, BoardGame::BOARD_DIMENSION_DEFAULT, $gameBuilder);
 
-        $io->section('BOARD');
-        var_dump($newGame->getBoardGame()->board);
+        $io->section('Game Board');
 
-        if ($this->movementManager->isPlayerWinner($newGame, $playerA)) {
+        $this->gameBoardPrinter->printBoard($newGame->getGameBoard());
+
+        if ($newGame->checkIfThereIsAWinner($newGame->getPlayerAToken())) {
             $io->success('Congratulations ' . $playerA->getUsername() . '! You are the winner!!');
-        } else if ($this->movementManager->isPlayerWinner($newGame, $playerB)) {
+        } else if ($newGame->checkIfThereIsAWinner($newGame->getPlayerBToken())) {
             $io->success('Congratulations ' . $playerB->getUsername() . '! You are the winner!!');
-        } else if (!$this->movementManager->hasFreeMovements($newGame)) {
+        } else if (!$newGame->hasFreeMovements()) {
             $io->warning('GAME OVER! No more movements left');
         } else {
             $io->note('Continue playing! Anyone can be the winner');
