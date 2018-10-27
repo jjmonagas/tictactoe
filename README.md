@@ -37,7 +37,7 @@ php bin/console tictactoe:play:start Charles Mary 'Mi Tic tac'
 
 ##### Start a new game between two users (Board dimension 5x5)
 ```
-php bin/console tictactoe:play:tart Charles Mary 'Mi Tic tac' -d 5
+php bin/console tictactoe:play:start Charles Mary 'Mi Tic tac' -d 5
 ```
 
 ##### Start a new game between two users (Invalid Board dimension 2x2)
